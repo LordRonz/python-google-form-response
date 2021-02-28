@@ -35,10 +35,10 @@ def main():
     for q, a in zip(questions, answers):
         tmp = []
         for ans in a:
-            n = input(f'Chances of getting {ans} for question "{q}" (percentage): ')
+            n = input(f'Chances of getting "{ans}" for question "{q}" (percentage): ')
             while not is_number(n):
                 print('Invalid input !')
-                n = input(f'Chances of getting {ans} for question "{q}" (percentage): ')
+                n = input(f'Chances of getting "{ans}" for question "{q}" (percentage): ')
             tmp.append(int(n))
         chances.append(tmp)
 
