@@ -8,16 +8,18 @@ def main():
     url = sys.argv[1] if len(sys.argv) > 1 else url
     if not url.startswith('https://') and not url.startswith('http://'):
         url = 'https://' + url
-    submit_url = url.replace('viewform', 'formResponse')
+
     user_agent = {'Referer': url, 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'}
-    html = requests.get(url)
-    if not html.ok:
-        print(f'Error {html.status_code}')
+    http = requests.get(url)
+    url = http.url
+    submit_url = url.replace('viewform', 'formResponse')
+    if not http.ok:
+        print(f'Error {http.status_code}')
         return
 
     is_number = lambda x: x.strip().isdigit()
     pattern = r'\[\d*,"[\w\s]*",[\w\s]*,[\w\d\s]*,\[\[\d*'
-    result = re.findall(pattern, html.text)
+    result = re.findall(pattern, http.text)
     entries = [f"entry.{a.split(',')[-1][2:]}" for a in result]
     questions = [a.split(',')[1][1:-1] for a in result]
     answers = []
