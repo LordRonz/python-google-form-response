@@ -54,8 +54,8 @@ def main():
 
     def form():
         form_data = {}
-        for i, entry in enumerate(entries):
-            form_data[entry] = random.choices(answers[i], weights=chances[i], k=1)[0]
+        for entry, answer, chance in zip(entries, answers, chances):
+            form_data[entry] = random.choices(answer, weights=chance, k=1)[0]
 
         r = requests.post(submit_url, data=form_data, headers=user_agent)
         if r.ok:
