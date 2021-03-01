@@ -9,7 +9,22 @@ def main():
     if not url.startswith('https://') and not url.startswith('http://'):
         url = 'https://' + url
 
-    user_agent = {'Referer': url, 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'}
+    ua = ''
+    try:
+        with open('user-agents.txt') as f:
+            line = next(f)
+            rr = random.randrange
+            for num, f in enumerate(f, 2):
+                if rr(num):
+                    continue
+                line = f
+            ua = line.strip()
+    except FileNotFoundError:
+        pass
+
+    ua = ua if ua else 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'
+
+    header = {'Referer': url, 'User-Agent': ua}
     http = requests.get(url)
     url = http.url
     submit_url = url.replace('viewform', 'formResponse')
@@ -57,7 +72,7 @@ def main():
         for entry, answer, chance in zip(entries, answers, chances):
             form_data[entry] = random.choices(answer, weights=chance, k=1)[0]
 
-        r = requests.post(submit_url, data=form_data, headers=user_agent)
+        r = requests.post(submit_url, data=form_data, headers=header)
         if r.ok:
             return_queue.put(1)
         else:
