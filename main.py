@@ -11,7 +11,7 @@ def main():
 
     ua = ''
     try:
-        with open('user-agents.txt') as f:
+        with open('user-agents.txt', 'rb') as f:
             line = next(f)
             rr = random.randrange
             for num, f in enumerate(f, 2):
@@ -22,7 +22,7 @@ def main():
     except FileNotFoundError:
         pass
 
-    ua = ua if ua else 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'
+    ua = ua if ua else b'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'
 
     header = {'Referer': url, 'User-Agent': ua}
     http = requests.get(url)
