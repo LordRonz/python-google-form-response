@@ -33,8 +33,9 @@ def main():
         return
 
     is_number = lambda x: x.strip().isdigit()
-    pattern = r'\[\d*,"[\w\s]*",[\w\s]*,[\w\d\s]*,\[\[\d*'
+    pattern = r'\[\d*,"[ -~]*",[\w\s]*,[\w\d\s]*,\[\[\d*'
     result = re.findall(pattern, http.text)
+
     entries = [f"entry.{a.split(',')[-1][2:]}" for a in result]
     questions = [a.split(',')[1][1:-1] for a in result]
     answers = []
